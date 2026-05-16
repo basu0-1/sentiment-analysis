@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import streamlit as st
 
 # ---------------- SAFE FILE PATH ----------------
 BASE_DIR = os.path.dirname(__file__)
@@ -13,8 +14,11 @@ if not os.path.exists(USER_FILE):
 def signup():
     st.subheader("📝 Create Account")
 
-    username = st.text_input("Username").strip().lower()
-    password = st.text_input("Password", type="password").strip()
+    username_input = st.text_input("Username")
+    password_input = st.text_input("Password", type="password")
+
+    username = username_input.strip().lower() if username_input else ""
+    password = password_input.strip() if password_input else ""
 
     if st.button("Sign Up"):
         if username == "" or password == "":
@@ -22,9 +26,7 @@ def signup():
             return
 
         df = pd.read_csv(USER_FILE)
-
-        # Normalize existing data
-        df["username"] = df["username"].str.strip().str.lower()
+        df["username"] = df["username"].astype(str).str.strip().str.lower()
 
         if username in df["username"].values:
             st.warning("⚠️ User already exists")
@@ -38,20 +40,17 @@ def signup():
 def login():
     st.subheader("🔐 Login")
 
-    username = st.text_input("Username").strip().lower()
-    password = st.text_input("Password", type="password").strip()
+    username_input = st.text_input("Username")
+    password_input = st.text_input("Password", type="password")
+
+    username = username_input.strip().lower() if username_input else ""
+    password = password_input.strip() if password_input else ""
 
     if st.button("Login"):
         df = pd.read_csv(USER_FILE)
 
-        # Normalize stored data
-        username_input = st.text_input("Username")
-        password_input = st.text_input("Password", type="password")
-        username = username_input.strip().lower() if username_input else ""
-        password = password_input.strip() if password_input else ""
-
-        # Debug (remove later if you want)
-        # st.write(df)
+        df["username"] = df["username"].astype(str).str.strip().str.lower()
+        df["password"] = df["password"].astype(str).str.strip()
 
         user_match = df[
             (df["username"] == username) &
