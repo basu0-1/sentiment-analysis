@@ -45,8 +45,10 @@ def login():
         df = pd.read_csv(USER_FILE)
 
         # Normalize stored data
-        df["username"] = df["username"].astype(str).str.strip().str.lower()
-        df["password"] = df["password"].astype(str).str.strip()
+        username_input = st.text_input("Username")
+        password_input = st.text_input("Password", type="password")
+        username = username_input.strip().lower() if username_input else ""
+        password = password_input.strip() if password_input else ""
 
         # Debug (remove later if you want)
         # st.write(df)
