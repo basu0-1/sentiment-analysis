@@ -4,9 +4,9 @@ import pickle
 model = pickle.load(open("model.pkl", "rb"))
 vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
 
-st.title("🧠 Personal Diary Sentiment Analyzer")
+st.title("🧠Sentiment Analyzer")
 
-text = st.text_area("Write your diary entry")
+text = st.text_area("Write here")
 
 if st.button("Analyze Sentiment"):
     data = vectorizer.transform([text])
